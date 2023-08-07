@@ -490,8 +490,8 @@ prices <- bbData$price
 #feature_stds <- apply(numeric_features, 2, sd)
 #numeric_features <- scale(numeric_features, center = feature_means, scale = feature_stds)
 
-categorical_features <- do.call(cbind, new_factors)
-rownames(categorical_features) <- NULL  # Reset row names
+#categorical_features <- do.call(cbind, new_factors)
+#rownames(categorical_features) <- NULL  # Reset row names
 
 # One-hot encode the categorical feature
 dummy_data <- dummyVars("~.", data.frame(categorical_feature))
@@ -509,11 +509,12 @@ selected_features <- rfe(features, prices,
                          sizes = c(1:ncol(features)), 
                          rfeControl = ctrl)
 
-print(selected_features_names) # to view the selected features
-
 # Get the selected feature indices
 selected_indices <- as.factor(selected_features$optVariables)
 selected_features_names <- colnames(features)[selected_indices]
+
+print(selected_features_names) # to view the selected features
+
 
 # Filter the data based on selected features
 selected_features <- features[, selected_indices]
@@ -555,7 +556,7 @@ evaluation <- model %>% evaluate(x_test, y_test)
 print(evaluation)
 
 # Make predictions for the selected features using the trained model
-predicted_price <- model %>% predict(list(dense_8_input=
+predicted_price <- model %>% predict(list(dense_2_input=
                                             as.matrix(selected_features)))
 
 # Convert predicted_price to a dataframe with selected_features as columns
